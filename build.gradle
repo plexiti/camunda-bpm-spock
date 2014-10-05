@@ -8,8 +8,8 @@ repositories {
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.3.6'
 
-    compile 'org.camunda.bpm:camunda-engine:7.2.0-alpha4'
-    runtime 'org.camunda.bpm:camunda-engine-spring:7.2.0-alpha4'
+    compile 'org.camunda.bpm:camunda-engine:7.2.0-alpha5'
+    runtime 'org.camunda.bpm:camunda-engine-spring:7.2.0-alpha5'
 
     testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
     testCompile "cglib:cglib-nodep:3.1"
