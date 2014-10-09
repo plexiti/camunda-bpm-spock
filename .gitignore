@@ -10,8 +10,7 @@ target
 .checkstyle
 # OSX
 .DS_Store
-generate-apidocs
-.gradle
-gradle*
-build
-classes
+/.gradle
+/gradle*
+/build
+/out

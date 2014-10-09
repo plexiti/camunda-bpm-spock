@@ -1,4 +1,9 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
+
+group = 'com.plexiti.camunda'
+version = '0.1.0-SNAPSHOT'
+sourceCompatibility = 1.6
 
 repositories {
     mavenLocal()
@@ -6,12 +11,12 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.3.6'
-
+    compile localGroovy()
     compile 'org.camunda.bpm:camunda-engine:7.2.0-alpha5'
     runtime 'org.camunda.bpm:camunda-engine-spring:7.2.0-alpha5'
-
-    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    testCompile ("org.spockframework:spock-core:0.7-groovy-2.0") {
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+    }
     testCompile "cglib:cglib-nodep:3.1"
     testRuntime 'com.h2database:h2:1.3.168'
     testCompile 'org.camunda.bpm.extension:camunda-bpm-assert:1.1'
