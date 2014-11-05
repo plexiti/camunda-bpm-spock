@@ -1,7 +1,7 @@
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-group = 'com.plexiti.camunda'
+group = 'org.camunda.bpm.extension'
 version = '0.1.0-SNAPSHOT'
 sourceCompatibility = 1.6
 
