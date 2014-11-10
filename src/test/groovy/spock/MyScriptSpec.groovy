@@ -2,18 +2,24 @@ package spock
 
 import org.camunda.bpm.engine.ProcessEngineConfiguration
 import org.camunda.bpm.engine.runtime.Execution
+import org.camunda.bpm.extension.spock.Script
+import org.camunda.bpm.extension.spock.Scripts
+import spock.lang.Specification
+
+import static org.camunda.bpm.extension.spock.Scripts.script
 
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-public class MyScriptSpec extends ScriptSpecification {
+@Script('bpmn/MyTestScript.groovy')
+public class MyScriptSpec extends Specification {
 
-    Execution execution
-    ProcessEngineConfiguration processEngineConfiguration
+    public Execution execution
+    public ProcessEngineConfiguration processEngineConfiguration
     
     void testScriptWithAssert() {
         when:
-        def result = evaluate("com/plexiti/test/MyTestScript.groovy")
+        def result = script().run()
         then:
         result == false
         1 * execution.id >> "SampleId"
@@ -23,7 +29,7 @@ public class MyScriptSpec extends ScriptSpecification {
 
     void testScriptWithAssert2() {
         when:
-        def result = evaluate("com/plexiti/test/MyTestScript.groovy")
+        def result = script().run()
         then:
         result == false
         1 * execution.id >> "SampleId"

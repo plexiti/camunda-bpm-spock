@@ -1,4 +1,4 @@
-package com.plexiti.test
+package bpmn
 
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.ProcessEngineConfiguration
