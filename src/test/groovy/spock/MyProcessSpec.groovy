@@ -11,7 +11,6 @@ import static org.camunda.bpm.extension.spock.Scripts.*
  */
 @Deployment ([
     "bpmn/MyTestProcess.bpmn",
-    "bpmn/MyTestScript.groovy",
 ])
 public class MyProcessSpec extends Specification {
 
@@ -24,7 +23,7 @@ public class MyProcessSpec extends Specification {
         0 * _
     }
 
-    void "The process can be fully executed and ended"() {
+    void "The process can be fully executed with a mocked script"() {
         given: 
         def pi = runtimeService().startProcessInstanceByKey('MyTestProcess')
         when:
@@ -32,8 +31,21 @@ public class MyProcessSpec extends Specification {
         then:
         assertThat(pi).isEnded()
         and:
-        2 * script().run() >> { true } >> { false }
+        2 * script("bpmn/MyTestScript.groovy").run() >> { true } >> { false }
         0 * _
+    }
+
+    @Deployment ([
+        "bpmn/MyTestProcess.bpmn",
+        "bpmn/MyTestScript.groovy",
+    ])
+    void "The process can be fully executed without mocking the script"() {
+        given:
+        def pi = runtimeService().startProcessInstanceByKey('MyTestProcess')
+        when:
+        complete(task(pi))
+        then:
+        assertThat(pi).isEnded()
     }
 
 }

@@ -1,5 +1,6 @@
 package org.camunda.bpm.extension.spock
 
+import groovy.xml.Namespace
 import org.camunda.bpm.engine.ProcessEngine
 import org.camunda.bpm.engine.ProcessEngines
 import org.camunda.bpm.engine.impl.test.TestHelper
@@ -32,13 +33,24 @@ public class DeploymentInterceptor implements IMethodInterceptor {
                         .enableDuplicateFiltering()
                         .name("SpockSpecificationDeployment")
         deployment.value().each { String resource ->
-            if (resource.endsWith(".groovy")) {
-                deploymentBuilder.addString(resource, String.format("%s.run('%s')", DeploymentInterceptor.class.name, resource))
-                groovy.lang.Script mock = invocation.getInstance().createMock(null, groovy.lang.Script, MOCK, JAVA, [:], null)
-                Scripts.set(resource, mock);
+            if (resource.endsWith('.bpmn')) {
+                def camunda = new Namespace("http://activiti.org/bpmn", 'camunda')
+                def definitions = new XmlParser().parse(ClassLoader.getSystemResourceAsStream(resource))
+                definitions.depthFirst().findAll{ it.attributes()[camunda.resource] }.each {
+                    String scriptResource = it.attributes()[camunda.resource]
+                    scriptResource = scriptResource.split('://')[1]
+                    if (!deployment.value().contains(scriptResource)) {
+                        deploymentBuilder.addString(scriptResource, String.format("%s.run('%s')", DeploymentInterceptor.class.name, scriptResource))
+                        groovy.lang.Script mock = invocation.getInstance().createMock(null, groovy.lang.Script, MOCK, JAVA, [:], null)
+                        // TODO for other languages: replace scriptFormat or language attribute with value 'groovy'
+                        Scripts.set(scriptResource, mock);
+                    }
+                }
+                // TODO for other languages: serialize changed dom to string and addString to deploymentBuilder
+                deploymentBuilder.addClasspathResource(resource);
             } else {
                 deploymentBuilder.addClasspathResource(resource);
-            }
+            } 
         }
         def deployment = deploymentBuilder.deploy()
         invocation.proceed();
