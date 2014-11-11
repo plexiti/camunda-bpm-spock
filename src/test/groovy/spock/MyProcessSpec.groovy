@@ -9,7 +9,7 @@ import static org.camunda.bpm.extension.spock.Scripts.*
 /**
  * @author Martin Schimak <martin.schimak@plexiti.com>
  */
-@Deployment (resources = [
+@Deployment ([
     "bpmn/MyTestProcess.bpmn",
     "bpmn/MyTestScript.groovy",
 ])

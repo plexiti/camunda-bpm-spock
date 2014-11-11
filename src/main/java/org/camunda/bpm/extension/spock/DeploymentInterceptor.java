@@ -34,7 +34,7 @@ public class DeploymentInterceptor implements IMethodInterceptor {
       .createDeployment()
       .enableDuplicateFiltering()
       .name("SpockSpecificationDeployment");
-    for (String resource: this.deployment.resources()) {
+    for (String resource: this.deployment.value()) {
       if (resource.endsWith(".groovy")) {
         deploymentBuilder.addString(resource, String.format("%s.run('%s')", getClass().getName(), resource));
         Script mock = (Script) ((Specification) invocation.getInstance())

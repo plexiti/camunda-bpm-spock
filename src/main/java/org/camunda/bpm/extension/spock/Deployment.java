@@ -16,6 +16,6 @@ import java.lang.annotation.Target;
 public @interface Deployment {
   
   /** Specify resources that make up the process definition. */
-  String[] resources() default {};
+  String[] value() default {};
 
 }
