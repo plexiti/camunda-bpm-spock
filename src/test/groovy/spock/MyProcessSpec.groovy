@@ -32,7 +32,7 @@ public class MyProcessSpec extends Specification {
         then:
         assertThat(pi).isEnded()
         and:
-        2 * script('bpmn/MyTestScript.groovy').run() >> { true } >> { false }
+        2 * script().run() >> { true } >> { false }
         0 * _
     }
 
