@@ -33,7 +33,7 @@ public class DeploymentInterceptor implements IMethodInterceptor {
                         .enableDuplicateFiltering()
                         .name("SpockSpecificationDeployment")
         deployment.value().each { String resource ->
-            if (resource.endsWith('.bpmn')) {
+            if (resource.endsWith('.bpmn') || resource.endsWith('bpmn20.xml')) {
                 def camunda = new Namespace("http://activiti.org/bpmn", 'camunda')
                 def definitions = new XmlParser().parse(ClassLoader.getSystemResourceAsStream(resource))
                 definitions.depthFirst().findAll{ it.attributes()[camunda.resource] }.each {
