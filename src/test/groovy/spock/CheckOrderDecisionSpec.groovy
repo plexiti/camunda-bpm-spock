@@ -30,7 +30,8 @@ public class CheckOrderDecisionSpec extends DecisionSpec {
     void "Refactor Order Decision To Use Hit Policy First"() {
 
         expect:
-        evaluate("checkOrder", [status: status, sum: sum]).result == evaluate("checkOrder-first", [status: status, sum: sum]).result
+        evaluate("checkOrder", [status: status, sum: sum]).result == 
+            evaluate("checkOrder-first", [status: status, sum: sum]).result
 
         where:
         status   | sum     
@@ -40,5 +41,40 @@ public class CheckOrderDecisionSpec extends DecisionSpec {
         "bronze" | 354.12 
 
     }
-    
+
+
+    @Deployment (["dmn/CheckOrderDecision.dmn", "dmn/CheckOrderDecision-increaseSilverLimit.dmn"])
+    @Unroll("Expect change for status '#status' and order amount of EUR #sum!")
+    void "Changed limit for Status Silver"() {
+
+        expect:
+        evaluate("checkOrder", [status: status, sum: sum]).result != 
+            evaluate("checkOrder-increaseSilverLimit", [status: status, sum: sum]).result
+            
+        where:
+        status   | sum     
+        "silver" | 1000    
+        "silver" | 1354.12 
+        "silver" | 1499.99    
+
+    }
+
+    @Deployment (["dmn/CheckOrderDecision.dmn", "dmn/CheckOrderDecision-increaseSilverLimit.dmn"])
+    @Unroll("Expect no change for status '#status' and order amount of EUR #sum!")
+    void "Changed limit for Status Silver does not have side effects"() {
+
+        expect:
+        evaluate("checkOrder", [status: status, sum: sum]).result == 
+            evaluate("checkOrder-increaseSilverLimit", [status: status, sum: sum]).result
+
+        where:
+        status   | sum    
+        "gold"   | 1354.12 
+        "silver" | 354.12 
+        "silver" | 999.99 
+        "silver" | 1500   
+        "bronze" | 1354.12 
+
+    }
+
 }
