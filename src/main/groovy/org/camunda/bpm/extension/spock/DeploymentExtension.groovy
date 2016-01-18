@@ -10,7 +10,7 @@ import org.spockframework.runtime.model.SpecInfo;
 public class DeploymentExtension extends AbstractAnnotationDrivenExtension<Deployment> {
 
     public void visitSpecAnnotation(Deployment deployment, SpecInfo spec) {
-        spec.features.findAll { !it.featureMethod.reflection.isAnnotationPresent(Script.class) }.each {
+        spec.features.findAll { !it.featureMethod.reflection.isAnnotationPresent(Deployment.class) }.each {
             visitFeatureAnnotation(deployment, it);
         }
     }

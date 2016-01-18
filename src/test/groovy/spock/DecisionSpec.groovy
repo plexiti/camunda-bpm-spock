@@ -16,4 +16,11 @@ abstract class DecisionSpec extends Specification {
         return test
     }
 
+    def evaluate(String decision, Integer version, Map<String, Object> input) {
+        def test = processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).singleResult
+        for (String key: test.keySet())
+            println "$key: ${test.getEntry(key)}"
+        return test
+    }
+
 }
