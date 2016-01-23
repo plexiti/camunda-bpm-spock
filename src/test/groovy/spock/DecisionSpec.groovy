@@ -9,18 +9,19 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.pro
  */
 abstract class DecisionSpec extends Specification {
 
-    def evaluate(String decision, Map<String, Object> input) {
-        def test = processEngine().decisionService.evaluateDecisionTableByKey(decision, input).singleResult
-        for (String key: test.keySet()) 
-            println "$key: ${test.getEntry(key)}"
-        return test
+    Map evaluate(Map<String, Object> input) {
+        def key = processEngine().repositoryService.createDecisionDefinitionQuery().singleResult().key
+        evaluate(key, input)
     }
 
-    def evaluate(String decision, Integer version, Map<String, Object> input) {
+    Map evaluate(String decision, Map<String, Object> input) {
+        def test = processEngine().decisionService.evaluateDecisionTableByKey(decision, input).singleResult
+        return test as Map
+    }
+
+    Map evaluate(String decision, Integer version, Map<String, Object> input) {
         def test = processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).singleResult
-        for (String key: test.keySet())
-            println "$key: ${test.getEntry(key)}"
-        return test
+        return test as Map
     }
 
 }
