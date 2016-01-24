@@ -9,34 +9,32 @@ import static org.camunda.bpm.engine.test.assertions.ProcessEngineAssertions.pro
  */
 abstract class DecisionSpec extends Specification {
 
-    Map evaluate(Map<String, Object> input) {
+    Map<String, Object> find(Map<String, Object> input) {
         def key = processEngine().repositoryService.createDecisionDefinitionQuery().singleResult().key
-        evaluate(key, input)
+        find(key, input)
     }
 
-    Map evaluate(String decision, Map<String, Object> input) {
-        def test = processEngine().decisionService.evaluateDecisionTableByKey(decision, input).singleResult
-        return test as Map
+    Map<String, Object> find(String decision, Map<String, Object> input) {
+        processEngine().decisionService.evaluateDecisionTableByKey(decision, input).singleResult
     }
 
-    Map evaluate(String decision, Integer version, Map<String, Object> input) {
-        def test = processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).singleResult
-        return test as Map
+    Map<String, Object> find(String decision, Integer version, Map<String, Object> input) {
+        processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).singleResult
     }
 
-    List<Map<String, Object>> list(Map<String, Object> input) {
+    Map<String, List> list(Map<String, Object> input) {
         def key = processEngine().repositoryService.createDecisionDefinitionQuery().singleResult().key
         list(key, input)
     }
 
-    List<Map<String, Object>> list(String decision, Map<String, Object> input) {
-        def test = processEngine().decisionService.evaluateDecisionTableByKey(decision, input).resultList
-        return test as List<Map<String, Object>>
+    Map<String, List> list(String decision, Map<String, Object> input) {
+        def result = processEngine().decisionService.evaluateDecisionTableByKey(decision, input).resultList
+        result[0]?.keySet()?.collectEntries{key->[key, result.collect {it.get(key)}]}
     }
 
-    List<Map<String, Object>> list(String decision, Integer version, Map<String, Object> input) {
-        def test = processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).resultList
-        return test as List<Map<String, Object>>
+    Map<String, List> list(String decision, Integer version, Map<String, Object> input) {
+        def result = processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).resultList
+        result[0]?.keySet()?.collectEntries{key->[key, result.collect {it.get(key)}]}
     }
 
 }

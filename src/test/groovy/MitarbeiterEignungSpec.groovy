@@ -14,24 +14,32 @@ class Prüfbeispiele_zur_Bestimmung_der_Eignung_von_Mitarbeitern extends Decisio
 
     void "Prüfbeispiele zur Bestimmung der Eignung von Mitarbeitern"() {
 
-        expect: "Je nach Schadenart und -höhe entscheidet einer der geeigneten Mitarbeiter"
-        list([type: Schadenart, expenditure: Schadenhoehe]).collect{it.employee} == Mitarbeiter
+        when: "Das Regelwerk zur Bestimmung der Eignung von Mitarbeitern ausgewertet wird ..."
 
-        and: "Je nach Schadenart und -höhe entscheiden diese allein oder auch nicht"
-        list([type: Schadenart, expenditure: Schadenhoehe]).collect{it.'4eyes'} == VierAugenPrinzip
+            def decision = list(type: Schadenart, expenditure: Schadenhoehe)
+
+        then: "entscheidet je nach Schadenart und -höhe einer der geeigneten Mitarbeiter ..."
+
+            decision.'employee' == Mitarbeiter
+
+        and: "ebenfalls nach Schadenart und -höhe entscheiden diese allein oder auch nicht"
+
+            decision.'4eyes' == VierAugenPrinzip
 
         where: "Fallsituation und Eignung der Mitarbeiter wie folgt"
-        Schadenart    | Schadenhoehe | Mitarbeiter                     | VierAugenPrinzip
-        "Unfall KFZ"  | 100          | ["Müller", "Meier"]             | [true, false]
-        "Unfall KFZ"  | 1500         | ["Meier"]                       | [false]
-        "Unfall KFZ"  | 15000        | ["Schmidt"]                     | [true]
-        "Haftpflicht" | 400          | ["Mustermann"]                  | [false]
-        "Haftpflicht" | 800          | ["Mustermann", "Sonnenschein"]  | [false, false]
-        "Haftpflicht" | 4000         | ["Sonnenschein"]                | [false]
-        "Haftpflicht" | 8000         | ["Sonnenschein", "Regenmacher"] | [true, true]
+
+            Schadenart    | Schadenhoehe | Mitarbeiter                     | VierAugenPrinzip
+            "Unfall KFZ"  | 100          | ["Müller", "Meier"]             | [true, false]
+            "Unfall KFZ"  | 1500         | ["Meier"]                       | [false]
+            "Unfall KFZ"  | 15000        | ["Schmidt"]                     | [true]
+            "Haftpflicht" | 400          | ["Mustermann"]                  | [false]
+            "Haftpflicht" | 800          | ["Mustermann", "Sonnenschein"]  | [false, false]
+            "Haftpflicht" | 4000         | ["Sonnenschein"]                | [false]
+            "Haftpflicht" | 8000         | ["Sonnenschein", "Regenmacher"] | [true, true]
         
-        and:
-        MitVierAugenPrinzip = VierAugenPrinzip.collect{it ? "mit" : "ohne"}
+        and: "Zur Ausgabe übersetze die Notwendigkeit für vier Augen in ein besser lesbares Wort"
+
+            MitVierAugenPrinzip = VierAugenPrinzip.collect{it ? "mit" : "ohne"}
 
     }
 
