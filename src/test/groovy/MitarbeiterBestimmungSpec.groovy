@@ -12,7 +12,7 @@ class Prüfbeispiele_zur_Bestimmung_eines_Mitarbeiters extends DecisionSpec {
     @Deployment(["dmn/MitarbeiterBestimmung.dmn"])
 
     @Unroll("Im Bereich '#Schadenart' entscheidet Mitarbeiter #Mitarbeiter für Fälle \
-             in Höhe von EUR #Schadenhoehe *#MitVierAugenPrinzip* 4-Augen-Prinzip")
+             in Höhe von EUR #Schadenhoehe #MitVierAugenPrinzip 4-Augen-Prinzip")
 
     void "Prüfbeispiele zur Bestimmung eines Mitarbeiters"() {
 

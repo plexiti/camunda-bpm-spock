@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn11.xsd" id="definitions" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="MitarbeiterEignung" name="Geeignete Mitarbeiter">
+    <decisionTable id="decisionTable" hitPolicy="COLLECT">
+      <input id="input1" label="Schadenart">
+        <inputExpression id="inputExpression1" typeRef="string">        <text>type</text>
+</inputExpression>
+      </input>
+      <input id="InputClause_1q26r1d" label="Schadenhöhe">
+        <inputExpression id="LiteralExpression_0hv46yi" typeRef="integer">        <text>expenditure</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Zuständiger Mitarbeiter" name="employee" typeRef="string" />
+      <output id="OutputClause_1i33dcs" label="4-Augen-Prinzip" name="4eyes" typeRef="boolean" />
+      <rule id="row-673365501-6">
+        <description></description>
+        <inputEntry id="UnaryTests_03h7dzy">        <text><![CDATA["Unfall KFZ"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_00t5odd">        <text><![CDATA[<1000]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_1n9lc9f">        <text><![CDATA["Müller"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_16o8vte">        <text>true</text>
+</outputEntry>
+      </rule>
+      <rule id="row-673365501-7">
+        <description></description>
+        <inputEntry id="UnaryTests_19qd9uq">        <text><![CDATA["Unfall KFZ"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_1us71vg">        <text><![CDATA[<10000]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_18bod2g">        <text><![CDATA["Meier"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_0smt4ri">        <text>false</text>
+</outputEntry>
+      </rule>
+      <rule id="row-673365501-8">
+        <inputEntry id="UnaryTests_0m66voo">        <text><![CDATA["Unfall KFZ"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_17xd8gy">        <text><![CDATA[>=5000]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0kvcoy4">        <text><![CDATA["Schmidt"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_1dkjua9">        <text>true</text>
+</outputEntry>
+      </rule>
+      <rule id="row-673365501-9">
+        <inputEntry id="UnaryTests_1ajyn0h">        <text><![CDATA["Haftpflicht"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_0l65to6">        <text><![CDATA[<1000]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0hb96ne">        <text><![CDATA["Mustermann"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_1eqm9a9">        <text>false</text>
+</outputEntry>
+      </rule>
+      <rule id="row-673365501-10">
+        <description></description>
+        <inputEntry id="UnaryTests_1fb0zft">        <text><![CDATA["Haftpflicht"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_025z5nv">        <text>]500..5000[</text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_13d2x4z">        <text><![CDATA["Sonnenschein"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_01ot9vr">        <text>false</text>
+</outputEntry>
+      </rule>
+      <rule id="row-815420295-1">
+        <inputEntry id="UnaryTests_0wp0dk0">        <text><![CDATA["Haftpflicht"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_0y03bl8">        <text><![CDATA[>=5000]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_05rp8ru">        <text><![CDATA["Sonnenschein"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_0opzgui">        <text>true</text>
+</outputEntry>
+      </rule>
+      <rule id="row-815420295-2">
+        <inputEntry id="UnaryTests_1ylp3mg">        <text><![CDATA["Haftpflicht"]]></text>
+</inputEntry>
+        <inputEntry id="UnaryTests_15pz8tr">        <text><![CDATA[>=5000]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0muy2nn">        <text><![CDATA["Regenmacher"]]></text>
+</outputEntry>
+        <outputEntry id="LiteralExpression_1v5cdaq">        <text>true</text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

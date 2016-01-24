@@ -24,4 +24,19 @@ abstract class DecisionSpec extends Specification {
         return test as Map
     }
 
+    List<Map<String, Object>> list(Map<String, Object> input) {
+        def key = processEngine().repositoryService.createDecisionDefinitionQuery().singleResult().key
+        list(key, input)
+    }
+
+    List<Map<String, Object>> list(String decision, Map<String, Object> input) {
+        def test = processEngine().decisionService.evaluateDecisionTableByKey(decision, input).resultList
+        return test as List<Map<String, Object>>
+    }
+
+    List<Map<String, Object>> list(String decision, Integer version, Map<String, Object> input) {
+        def test = processEngine().decisionService.evaluateDecisionTableByKeyAndVersion(decision, version, input).resultList
+        return test as List<Map<String, Object>>
+    }
+
 }
