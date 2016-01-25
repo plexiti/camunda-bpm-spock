@@ -9,26 +9,26 @@ class Prüfbeispiele_zur_Bestimmung_der_Eignung_von_Mitarbeitern extends Decisio
 
     @Deployment(["dmn/MitarbeiterEignung.dmn"])
 
-    @Unroll("Im Bereich '#Schadenart' entscheiden die Mitarbeiter #Mitarbeiter für Fälle \
+    @Unroll("Im Bereich '#Schadenart' entscheiden die Mitarbeiter #MitarbeiterErwartet für Fälle \
              in Höhe von EUR #Schadenhoehe #MitVierAugenPrinzip 4-Augen-Prinzip")
 
     void "Prüfbeispiele zur Bestimmung der Eignung von Mitarbeitern"() {
 
         when: "Das Regelwerk zur Bestimmung der Eignung von Mitarbeitern ausgewertet wird ..."
 
-            def decision = list(type: Schadenart, expenditure: Schadenhoehe)
+            Map decision = collect(type: Schadenart, expenditure: Schadenhoehe)
 
-        then: "entscheidet je nach Schadenart und -höhe einer der geeigneten Mitarbeiter ..."
+        then: "entscheidet je nach Schadenart und -höhe einer der erwarteten Mitarbeiter ..."
 
-            decision.'employee' == Mitarbeiter
+            decision['employee'] == MitarbeiterErwartet
 
-        and: "ebenfalls nach Schadenart und -höhe entscheiden diese allein oder auch nicht"
+        and: "ebenfalls nach Schadenart und -höhe entscheiden diese wie erwartet allein oder auch nicht"
 
-            decision.'4eyes' == VierAugenPrinzip
+            decision['4eyes'] == VierAugenErwartet
 
         where: "Fallsituation und Eignung der Mitarbeiter wie folgt"
 
-            Schadenart    | Schadenhoehe | Mitarbeiter                     | VierAugenPrinzip
+            Schadenart    | Schadenhoehe | MitarbeiterErwartet             | VierAugenErwartet
             "Unfall KFZ"  | 100          | ["Müller", "Meier"]             | [true, false]
             "Unfall KFZ"  | 1500         | ["Meier"]                       | [false]
             "Unfall KFZ"  | 15000        | ["Schmidt"]                     | [true]
@@ -36,10 +36,10 @@ class Prüfbeispiele_zur_Bestimmung_der_Eignung_von_Mitarbeitern extends Decisio
             "Haftpflicht" | 800          | ["Mustermann", "Sonnenschein"]  | [false, false]
             "Haftpflicht" | 4000         | ["Sonnenschein"]                | [false]
             "Haftpflicht" | 8000         | ["Sonnenschein", "Regenmacher"] | [true, true]
-        
+
         and: "Zur Ausgabe übersetze die Notwendigkeit für vier Augen in ein besser lesbares Wort"
 
-            MitVierAugenPrinzip = VierAugenPrinzip.collect{it ? "mit" : "ohne"}
+            MitVierAugenPrinzip = VierAugenErwartet.collect { it ? "mit" : "ohne" }
 
     }
 

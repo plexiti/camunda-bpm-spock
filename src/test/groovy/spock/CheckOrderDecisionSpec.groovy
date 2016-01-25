@@ -14,7 +14,7 @@ public class CheckOrderDecisionSpec extends DecisionSpec {
     void "Verify Order Decision By Example"() {
         
         expect:
-        find(status: status, sum: sum).result == result
+        unique(status: status, sum: sum).result == result
 
         where:
         status   | sum     | result
@@ -30,8 +30,8 @@ public class CheckOrderDecisionSpec extends DecisionSpec {
     void "Refactor Order Decision To Use Hit Policy First"() {
 
         expect:
-        find("checkOrder", [status: status, sum: sum]).result == 
-            find("checkOrder-first", [status: status, sum: sum]).result
+        unique("checkOrder", [status: status, sum: sum]).result == 
+            unique("checkOrder-first", [status: status, sum: sum]).result
 
         where:
         status   | sum     
@@ -48,8 +48,8 @@ public class CheckOrderDecisionSpec extends DecisionSpec {
     void "Changed limit for Status Silver"() {
 
         expect:
-        find("checkOrder", [status: status, sum: sum]).result != 
-            find("checkOrder-increaseSilverLimit", [status: status, sum: sum]).result
+        unique("checkOrder", [status: status, sum: sum]).result != 
+            unique("checkOrder-increaseSilverLimit", [status: status, sum: sum]).result
             
         where:
         status   | sum     
@@ -64,8 +64,8 @@ public class CheckOrderDecisionSpec extends DecisionSpec {
     void "Changed limit for Status Silver does not have side effects"() {
 
         expect:
-        find("checkOrder", [status: status, sum: sum]).result == 
-            find("checkOrder-increaseSilverLimit", [status: status, sum: sum]).result
+        unique("checkOrder", [status: status, sum: sum]).result == 
+            unique("checkOrder-increaseSilverLimit", [status: status, sum: sum]).result
 
         where:
         status   | sum    
